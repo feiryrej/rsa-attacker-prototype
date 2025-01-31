@@ -6,7 +6,7 @@ from sympy import isprime, gcd
 
 class BruteForce:
     @staticmethod
-    def decrypt(n: int, timeout: int = 30) -> Optional[Tuple[int, int]]:
+    def decrypt(n: int, timeout: int = 60) -> Optional[Tuple[int, int]]:
         """Brute-force factorization"""
         start_time = time.time()
         i = 2
@@ -18,7 +18,7 @@ class BruteForce:
 
 class EulersFactorization:
     @staticmethod
-    def decrypt(n: int, timeout: int = 30) -> Optional[Tuple[int, int]]:
+    def decrypt(n: int, timeout: int = 60) -> Optional[Tuple[int, int]]:
         """Euler's factorization method"""
         start_time = time.time()
         a = math.isqrt(n)
