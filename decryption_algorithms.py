@@ -88,3 +88,37 @@ class GNFS:
             print(f"GNFS error: {e}")
         return None
 
+class ShorsAlgorithm:
+    @staticmethod
+    def decrypt(n: int, timeout: int = 60) -> Optional[Tuple[int, int]]:
+        """Classical simulation of Shor's algorithm"""
+        def find_period(a: int, n: int) -> Optional[int]:
+            x = a
+            period = 1
+            seen = {x: period}
+            
+            while period < 100:
+                x = (x * a) % n
+                period += 1
+                if x in seen:
+                    return period - seen[x]
+                seen[x] = period
+            return None
+        
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            a = random.randrange(2, n)
+            d = gcd(a, n)
+            if d > 1:
+                return (d, n // d)
+                
+            r = find_period(a, n)
+            if r and r % 2 == 0:
+                x = pow(a, r // 2, n)
+                if x != n - 1:
+                    factor = gcd(x - 1, n)
+                    if 1 < factor < n:
+                        return (factor, n // factor)
+        return None
+
+
