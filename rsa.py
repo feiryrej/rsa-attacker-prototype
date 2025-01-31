@@ -59,3 +59,21 @@ class RSA:
             encrypted_chunks.append(encrypted_chunk)
 
         return encrypted_chunks
+    
+    def decrypt(self, ciphertext_chunks: List[int]) -> str:
+        """Decrypt ciphertext chunks back to string using RSA"""
+        decrypted_bytes = bytearray()
+        
+        for chunk in ciphertext_chunks:
+            if chunk >= self.n:
+                raise ValueError("Ciphertext chunk is too large for the chosen key length.")
+
+            msg_int = pow(chunk, self.d, self.n)
+            chunk_size = (msg_int.bit_length() + 7) // 8
+            chunk_bytes = msg_int.to_bytes(chunk_size, 'big')
+            decrypted_bytes.extend(chunk_bytes)
+
+        try:
+            return decrypted_bytes.decode()
+        except UnicodeDecodeError:
+            return "Decryption failed: Invalid message encoding."
