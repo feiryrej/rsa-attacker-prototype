@@ -59,3 +59,32 @@ class QuadraticSieve:
             x += 1
         return None
 
+class GNFS:
+    @staticmethod
+    def decrypt(n: int, timeout: int = 60) -> Optional[Tuple[int, int]]:
+        """General Number Field Sieve algorithm"""
+        def find_polynomial(n: int) -> list:
+            degree = int(math.pow(math.log(n, 2), 1/3))
+            base = int(math.pow(n, 1/(degree + 1)))
+            coeffs = [1]
+            temp = n
+            for i in range(degree):
+                coeff = temp % base
+                coeffs.append(coeff)
+                temp //= base
+            return coeffs
+
+        start_time = time.time()
+        try:
+            poly = find_polynomial(n)
+            x = math.isqrt(n)
+            while time.time() - start_time < timeout:
+                val = sum(c * (x ** i) for i, c in enumerate(poly))
+                factor = gcd(val, n)
+                if 1 < factor < n:
+                    return (factor, n // factor)
+                x += 1
+        except Exception as e:
+            print(f"GNFS error: {e}")
+        return None
+
