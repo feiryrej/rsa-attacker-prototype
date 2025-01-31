@@ -5,7 +5,6 @@ from rsa import RSA
 from tabulate import tabulate
 from fpdf import FPDF
 
-
 def generate_pdf_report(results, oaep_results, rsa, message, ciphertext_chunks, key_length):
     """Generate a PDF report with the results of the RSA analysis."""
     pdf = FPDF()
@@ -13,12 +12,12 @@ def generate_pdf_report(results, oaep_results, rsa, message, ciphertext_chunks, 
     pdf.set_font("Arial", size=12)
 
     # Title
-    pdf.set_font("Arial", size=16, style='B')
+    pdf.set_font("Arial", size=14, style='B')
     pdf.cell(200, 10, txt="RSA Encryption Analysis Report", ln=True, align='C')
     pdf.ln(10)
 
     # Section 1: RSA Encryption Details
-    pdf.set_font("Arial", size=14, style='B')
+    pdf.set_font("Arial", size=15, style='B')
     pdf.cell(200, 10, txt="1. RSA Encryption Details", ln=True)
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, txt=f"Message: {message}", ln=True)
@@ -31,21 +30,27 @@ def generate_pdf_report(results, oaep_results, rsa, message, ciphertext_chunks, 
     # Section 2: Decryption Algorithm Results
     pdf.set_font("Arial", size=14, style='B')
     pdf.cell(200, 10, txt="2. Decryption Algorithm Results", ln=True)
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("Courier", size=12)  # Use monospaced font for alignment
     pdf.cell(200, 10, txt="Results of various decryption algorithms:", ln=True)
 
-    # Convert results to a table
-    table = tabulate(results, headers=['Algorithm', 'Time', 'Success', 'Decrypted Message'], tablefmt='grid')
-    pdf.multi_cell(0, 10, txt=table)
+    # Convert results to a table with proper formatting
+    table = tabulate(results, 
+                     headers=['Algorithm', 'Time (s)', 'Success', 'Decrypted'], 
+                     tablefmt='grid',
+                     colalign=("left", "right", "center", "left"))  # Align columns properly
+    
+    pdf.multi_cell(0, 6, txt=table)  # Use smaller line height for compact display
     pdf.ln(10)
 
     # Section 3: RSA-OAEP Performance
     pdf.set_font("Arial", size=14, style='B')
     pdf.cell(200, 10, txt="3. RSA-OAEP Performance", ln=True)
     pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt=f"RSA-OAEP Encryption Time: {oaep_results['encryption_time']:.4f}s", ln=True)
-    pdf.cell(200, 10, txt=f"RSA-OAEP Decryption Time: {oaep_results['decryption_time']:.4f}s", ln=True)
-    pdf.cell(200, 10, txt=f"Decrypted Message: {oaep_results['plaintext']}", ln=True)
+
+    # Safely handle OAEP results
+    pdf.cell(200, 10, txt=f"RSA-OAEP Encryption Time: {oaep_results.get('encryption_time', 'N/A')} s", ln=True)
+    pdf.cell(200, 10, txt=f"RSA-OAEP Decryption Time: {oaep_results.get('decryption_time', 'N/A')} s", ln=True)
+    pdf.cell(200, 10, txt=f"Decrypted Message: {oaep_results.get('plaintext', 'N/A')}", ln=True)
 
     # Check if the output directory exists
     if not os.path.exists("output"):
@@ -54,7 +59,6 @@ def generate_pdf_report(results, oaep_results, rsa, message, ciphertext_chunks, 
     # Save the PDF to output/result.pdf
     pdf.output("output/rsa-analysis-report.pdf")
     print("\nPDF report generated: output/rsa-analysis-report.pdf")
-
 
 def main():
     """Main function to run RSA analysis"""
@@ -112,22 +116,28 @@ def main():
     print("\nResults:")
     print("=" * 50)
     print(tabulate(results, 
-                  headers=['Algorithm', 'Time', 'Success', 'Decrypted Message'],
-                  tablefmt='grid'))
+                   headers=['Algorithm', 'Time (s)', 'Success', 'Decrypted'],
+                   tablefmt='grid',
+                   colalign=("left", "right", "center", "left"))) 
 
     print("\nMeasuring RSA-OAEP performance...")
-    oaep_results = pt.measure_rsa_oaep(key_length, message)
+    try:
+        oaep_results = pt.measure_rsa_oaep(key_length, message)
+    except Exception as e:
+        print(f"RSA-OAEP Performance Measurement Error: {e}")
+        oaep_results = {
+            'encryption_time': 'N/A', 
+            'decryption_time': 'N/A', 
+            'plaintext': 'N/A'
+        }
 
-    if oaep_results['encryption_time'] is not None:
-        print(f"RSA-OAEP Encryption Time: {oaep_results['encryption_time']:.4f}s")
-    if oaep_results['decryption_time'] is not None:
-        print(f"RSA-OAEP Decryption Time: {oaep_results['decryption_time']:.4f}s")
-    if oaep_results['plaintext'] is not None:
-        print(f"Decrypted Message: {oaep_results['plaintext']}")
+    # Print OAEP results
+    print(f"RSA-OAEP Encryption Time: {oaep_results.get('encryption_time', 'N/A')}")
+    print(f"RSA-OAEP Decryption Time: {oaep_results.get('decryption_time', 'N/A')}")
+    print(f"Decrypted Message: {oaep_results.get('plaintext', 'N/A')}")
 
     # Generate PDF report
     generate_pdf_report(results, oaep_results, rsa, message, ciphertext_chunks, key_length)
-
 
 if __name__ == "__main__":
     main()
