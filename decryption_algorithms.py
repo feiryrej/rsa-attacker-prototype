@@ -33,7 +33,7 @@ class EulersFactorization:
                 return (a - b, a + b)
             a += 1
         return None
-    
+
 class QuadraticSieve:
     @staticmethod
     def decrypt(n: int, timeout: int = 60) -> Optional[Tuple[int, int]]:
@@ -120,5 +120,3 @@ class ShorsAlgorithm:
                     if 1 < factor < n:
                         return (factor, n // factor)
         return None
-
-
