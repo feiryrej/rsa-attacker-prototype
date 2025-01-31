@@ -1,4 +1,3 @@
-# performance_testing.py
 import time
 from typing import Dict, List
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
