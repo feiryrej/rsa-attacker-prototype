@@ -1,6 +1,7 @@
 import math
 import random
 from sympy import isprime
+from typing import List
 
 class RSA:
     """RSA implementation with configurable key length and message chunking"""
@@ -9,6 +10,10 @@ class RSA:
             self.key_length = key_length
             self.e = 65537  # Standard RSA public exponent
             self.generate_keys()
+
+    def get_max_chunk_size(self) -> int:
+        """Calculate maximum number of bytes that can be encrypted with current key"""
+        return (self.key_length // 8) - 1
 
     def generate_prime(self, bits: int) -> int:
         """Generate a prime number of specified bit length"""
@@ -30,3 +35,16 @@ class RSA:
         self.n = self.p * self.q
         phi = (self.p - 1) * (self.q - 1)
         self.d = pow(self.e, -1, phi)
+
+    def chunk_message(self, message: str) -> List[int]:
+        """Split message into chunks that fit within key length"""
+        message_bytes = message.encode()
+        chunk_size = self.get_max_chunk_size()
+        chunks = []
+
+        for i in range(0, len(message_bytes), chunk_size):
+            chunk = message_bytes[i:i + chunk_size]
+            chunk_int = int.from_bytes(chunk, 'big')
+            chunks.append(chunk_int)
+            
+        return chunks
