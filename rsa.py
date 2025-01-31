@@ -46,5 +46,16 @@ class RSA:
             chunk = message_bytes[i:i + chunk_size]
             chunk_int = int.from_bytes(chunk, 'big')
             chunks.append(chunk_int)
-            
+
         return chunks
+
+    def encrypt(self, message: str) -> List[int]:
+        """Encrypt a string message using RSA with chunking"""
+        chunks = self.chunk_message(message)
+        encrypted_chunks = []
+
+        for chunk in chunks:
+            encrypted_chunk = pow(chunk, self.e, self.n)
+            encrypted_chunks.append(encrypted_chunk)
+
+        return encrypted_chunks
