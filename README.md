@@ -4,7 +4,7 @@
 <br />
 <div align="center"> 
   <a href="https://github.com/feiryrej/rsa-attacker-prototype">
-    <img src="https://github.com/user-attachments/assets/2ded5581-28e7-4900-a529-74a2dcc352f9" alt="Logo" width="140" height="140">
+    <img src="https://github.com/user-attachments/assets/2da91324-a23d-4655-99d6-766c71b232ae" alt="Logo" width="170" height="170">
   </a>
 
   <h1 align="center">RSA-Attacker-Prototype</h1> 
