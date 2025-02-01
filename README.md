@@ -174,7 +174,9 @@ View the encrypted message, decryption process, and decryption algorithm results
         <td>
           Syruz played a key role in the development of rsa, implementing the core RSA encryption and decryption system. He designed the key generation process, 
           ensuring the secure creation of RSA key pairs using random prime generation and modular exponentiation. To enhance encryption efficiency, he implemented message chunking, 
-          allowing larger plaintexts to be processed while maintaining RSA’s security constraints.
+          allowing larger plaintexts to be processed while maintaining RSA’s security constraints. Syruz also developed the encryption and decryption methods, 
+          applying public-key cryptography principles to securely encode and decode messages. Additionally, he incorporated exception handling to detect and manage decryption failures 
+          caused by invalid message encoding. His work on rsa_core.py establishes the foundation for a robust and modular RSA cryptosystem.
         </td>
       </tr>
       <tr>
@@ -182,9 +184,10 @@ View the encrypted message, decryption process, and decryption algorithm results
         <td><img src="https://avatars.githubusercontent.com/u/65350664?v=4" alt="" style="border-radius: 50%; width: 50px;"></td>
         <td><a href="https://github.com/HansQueja">HansQueja</a></td>
         <td>
-          Hans developed performance testing, which is responsible for evaluating the efficiency of encryption and decryption algorithms. He implemented test_algorithm, 
-          a function that benchmarks decryption techniques by measuring execution time, verifying decryption success, and handling errors gracefully. Additionally, 
-          he designed measure_rsa_oaep, which assesses the encryption and decryption performance of RSA using Optimal Asymmetric Encryption Padding (OAEP) with SHA-256. 
+          Hans developed performance testing, which is responsible for evaluating the efficiency of encryption and decryption algorithms. He implemented test_algorithm, a function that 
+          benchmarks decryption techniques by measuring execution time, verifying decryption success, and handling errors gracefully. Additionally, he designed measure_rsa_oaep, 
+          which assesses the encryption and decryption performance of RSA using Optimal Asymmetric Encryption Padding (OAEP) with SHA-256. 
+          His work ensures that the system can effectively compare different decryption methods and provides critical insights into the computational cost of RSA encryption and decryption.
         </td>
       </tr>
       <tr>
