@@ -11,7 +11,7 @@
   <p align="center">
     Mapping Attack Resistance and Vulnerabilities
     <br />
-    <a href="https://drive.google.com/drive/folders/13OPHTafFAbe67403Vr7lv9-Q2bJgp9s2?usp=sharing"><strong>Explore the paper »</strong></a>
+    <a href="https://drive.google.com/drive/folders/13OPHTafFAbe67403Vr7lv9-Q2bJgp9s2"><strong>Explore the paper »</strong></a>
     <br />
     <br />
     <a href="https://github.com/feiryrej/rsa-attacker-prototype/issues">Report Bug</a>
